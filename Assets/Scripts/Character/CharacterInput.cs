@@ -16,6 +16,7 @@ namespace Myoworld.Character
         #endregion
         private IMove _moveProvider;
         private IRotateCamera _cameraRotatorProvider;
+        private IJump _jumpProvider;
 
         // Start is called before the first frame update
         void Start()
@@ -31,6 +32,12 @@ namespace Myoworld.Character
             {
                 Debug.LogError($"Camera Rotator Provider provider missing for objett : {gameObject.name}");
             }
+
+            _jumpProvider = _camera.GetComponentInChildren<IJump>();
+            if (_jumpProvider == null)
+            {
+                Debug.LogError($"Jump Provider provider missing for objett : {gameObject.name}");
+            }
         }
 
         #region EVENT METHOD
@@ -43,8 +50,12 @@ namespace Myoworld.Character
         public void OnLook(InputValue value)
         {
             Vector2 direction = value.Get<Vector2>();
-            Debug.Log("OnLook, direction : " + direction);
+           // Debug.Log("OnLook, direction : " + direction);
             _cameraRotatorProvider.RotateCamera(direction);
+        }
+        public void OnJump(InputValue value)
+        {
+            _jumpProvider.Jump();
         }
         #endregion
 

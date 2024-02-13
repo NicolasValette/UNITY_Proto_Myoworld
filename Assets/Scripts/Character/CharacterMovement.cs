@@ -1,10 +1,11 @@
+using Myoworld.Character;
 using Myoworld.Datas;
 using Myoworld.Interfaces;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera
+public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera, IJump
 {
     [SerializeField]
     private bool _isDebugMode = false;
@@ -17,8 +18,13 @@ public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera
 
     private Vector2 _moveDirection = Vector2.zero;
     private Vector2 _cameraDelta = Vector2.zero;
+    private GroundCheck _groundCheck;
 
-
+    private float _jumpingTime = 0f;
+    private bool _isJumping = false;
+    private bool _isJumpActive = false;
+    private float _fallingMultiplier = 1f;
+        
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +34,12 @@ public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera
             Debug.LogWarning($"RigidBody missing in {gameObject.name}");
             _rigidbody = gameObject.AddComponent<Rigidbody>();
         }
+
+        _groundCheck = gameObject.GetComponentInChildren<GroundCheck>();
+        if (_groundCheck == null )
+        {
+            Debug.LogError($"GroundCheck missing in {gameObject.name}");
+        }
     }
 
     // Update is called once per frame
@@ -35,6 +47,7 @@ public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera
     {
         MoveCharacter();
         RotateCameraCharacter();
+        JumpCharacter();
     }
 
     private void MoveCharacter ()
@@ -49,16 +62,40 @@ public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera
     }
     private void RotateCameraCharacter()
     {
+        Vector3 rotationCamera = _camera.transform.localEulerAngles;
+        Vector3 rotationCharacter = _rigidbody.transform.localEulerAngles;
+        rotationCharacter.y += _cameraDelta.x * Time.deltaTime * _playerData.RotationSpeed;
+        rotationCamera.z += _cameraDelta.y * Time.deltaTime * _playerData.RotationSpeed;
+        rotationCamera.z = Mathf.Clamp(rotationCamera.z, 40f, 125f);
 
-        //_camera.transform.Rotate(Vector3.up * _cameraDelta.x * Time.deltaTime * _playerData.RotationSpeed);
-        Vector3 rotation = _camera.transform.localEulerAngles;
-        rotation.y += _cameraDelta.x * Time.deltaTime * _playerData.RotationSpeed;
-        rotation.z += _cameraDelta.y * Time.deltaTime * _playerData.RotationSpeed;
-        rotation.z = Mathf.Clamp(rotation.z, 40f, 125f);
-        _camera.transform.rotation = Quaternion.Euler(rotation);
-        
-        //_camera.transform.rotation.y = Mathf.Clamp(_camera.transform.rotation.y, -20f, 20f);
+        //Apply rotations
+        _rigidbody.transform.rotation = Quaternion.Euler(rotationCharacter);
+        var rot = Quaternion.Euler(rotationCamera);
+        _camera.transform.localRotation = rot;
     }
+    private void JumpCharacter()
+    {
+        //TODO : change this mechanics asap
+        if (_isJumping)
+        {
+            _rigidbody.velocity = new Vector3(_rigidbody.velocity.x, _playerData.JumpForce, _rigidbody.velocity.z);
+            _jumpingTime += Time.deltaTime;
+        }
+
+        if (_rigidbody.velocity.y >= 0)
+        {
+            _rigidbody.AddForce((_playerData.GravityScale) * _rigidbody.mass * _fallingMultiplier * Physics.gravity);
+        }
+        else if (_rigidbody.velocity.y < 0)
+        {
+            _rigidbody.AddForce((_playerData.FallingGravityScale) * _rigidbody.mass * _fallingMultiplier * Physics.gravity);
+        }
+        if (_jumpingTime > _playerData.JumpButtonTime)
+        {
+            _isJumping = false;
+        }
+    }
+
     public void Move(Vector2 moveDirection)
     {
         _moveDirection = moveDirection;
@@ -67,5 +104,25 @@ public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera
     public void RotateCamera(Vector2 cameraDirection)
     {
         _cameraDelta = cameraDirection;
+    }
+
+    public void Jump()
+    {
+
+        Debug.Log("I Jump");
+
+
+        if (!_isJumpActive && _groundCheck.IsGrounded())
+        {
+            _isJumping = true;
+            _isJumpActive = true;
+            _jumpingTime = 0f;
+        }
+        else
+        {
+            _isJumping = false; ;
+            _isJumpActive = false;
+        }
+       
     }
 }
