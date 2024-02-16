@@ -17,6 +17,7 @@ namespace Myoworld.Character
         private IMove _moveProvider;
         private IRotateCamera _cameraRotatorProvider;
         private IJump _jumpProvider;
+        private IThrow _launcherProvider;
 
         // Start is called before the first frame update
         void Start()
@@ -38,6 +39,12 @@ namespace Myoworld.Character
             {
                 Debug.LogError($"Jump Provider provider missing for objett : {gameObject.name}");
             }
+
+            _launcherProvider = _objectToMove.GetComponentInChildren<IThrow>();
+            if (_launcherProvider == null)
+            {
+                Debug.LogError($"Launcher provider missinf for object : {gameObject.name}");
+            }
         }
 
         #region EVENT METHOD
@@ -56,6 +63,10 @@ namespace Myoworld.Character
         public void OnJump(InputValue value)
         {
             _jumpProvider.Jump();
+        }
+        public void OnFire (InputValue value)
+        {
+            _launcherProvider.Throw();
         }
         #endregion
 
