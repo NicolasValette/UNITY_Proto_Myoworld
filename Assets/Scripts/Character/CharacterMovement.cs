@@ -1,12 +1,14 @@
 using Myoworld.Character;
 using Myoworld.Datas;
 using Myoworld.Interfaces;
+using UnityEditor;
 using UnityEngine;
 
 namespace Myoworld.Character
 {
     public class CharacterMovement : MonoBehaviour, IMove, IRotateCamera, IJump
     {
+        #region Serialized Fields
         [SerializeField]
         private bool _isDebugMode = false;
         [SerializeField]
@@ -15,6 +17,9 @@ namespace Myoworld.Character
         private Rigidbody _rigidbody;
         [SerializeField]
         private GameObject _camera;
+        [SerializeField]
+        private CharacterAnimation _animator;
+        #endregion
 
         private Vector2 _moveDirection = Vector2.zero;
         private Vector2 _cameraDelta = Vector2.zero;
@@ -53,12 +58,17 @@ namespace Myoworld.Character
         private void MoveCharacter()
         {
             Vector3 direction = new Vector3(_moveDirection.x, 0, _moveDirection.y) * _playerData.Speed;
+            float speed = direction.sqrMagnitude;
             direction.y = _rigidbody.position.y;
 
             Vector3 currentVelocity = Vector3.zero;
             //if (_isDebugMode) Debug.Log($"Move forward : {direction}");
             //_rigidbody.velocity = Vector3.SmoothDamp(_rigidbody.velocity, direction, ref currentVelocity, _playerData.Acceleration);
             _rigidbody.transform.Translate(_moveDirection.x * _playerData.Speed * Time.deltaTime, 0f, _moveDirection.y * _playerData.Speed * Time.deltaTime);
+
+      
+            _animator.Move(speed);
+
         }
         private void RotateCameraCharacter()
         {
@@ -94,6 +104,8 @@ namespace Myoworld.Character
             {
                 _isJumping = false;
             }
+
+            _animator.Jump();
         }
 
         public void Move(Vector2 moveDirection)
