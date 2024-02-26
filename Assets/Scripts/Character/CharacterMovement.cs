@@ -76,7 +76,7 @@ namespace Myoworld.Character
             Vector3 rotationCharacter = _rigidbody.transform.localEulerAngles;
             rotationCharacter.y += _cameraDelta.x * Time.deltaTime * _playerData.RotationSpeed;
             rotationCamera.z += _cameraDelta.y * Time.deltaTime * _playerData.RotationSpeed;
-            rotationCamera.z = Mathf.Clamp(rotationCamera.z, 40f, 125f);
+            rotationCamera.z = Mathf.Clamp(rotationCamera.z, 75f, 125f);
 
             //Apply rotations
             _rigidbody.transform.rotation = Quaternion.Euler(rotationCharacter);
