@@ -23,8 +23,8 @@ namespace Myoworld.Character
         }
         public void Capture()
         {
-            Debug.Log("Capture");
             OnCapture?.Invoke();
+            Destroy(gameObject);
         }
     }
 }

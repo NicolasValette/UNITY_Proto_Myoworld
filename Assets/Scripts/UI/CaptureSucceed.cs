@@ -23,15 +23,12 @@ public class CaptureSucceed : MonoBehaviour
     }
     public void DisplayMessage()
     {
-        Debug.Log("1");
         StartCoroutine(DisplayCaptureMessage());
     }
     public IEnumerator DisplayCaptureMessage ()
     {
-        Debug.Log("2");
         _captureText.enabled = true;
         yield return new WaitForSeconds(2f);
         _captureText.enabled = false;
-        Debug.Log("3");
     }
 }

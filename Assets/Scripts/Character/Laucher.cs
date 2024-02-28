@@ -18,14 +18,14 @@ namespace Myoworld.Character
         private float _launchForce = 5f;
         [SerializeField]
         private CharacterAnimation _animation;
-        
+        [SerializeField]
+        private float _ballLifetime = 2f;
+
         #endregion
 
 
         public void Throw()
         {
-            Debug.Log("Launch !!");
-            
             _animation.Throw();
         }
         public void Launch()
@@ -34,6 +34,7 @@ namespace Myoworld.Character
             var rg = ball.GetComponent<Rigidbody>();
             rg.AddForce(_player.forward * _launchForce, ForceMode.Impulse);
             rg.AddTorque(Random.insideUnitSphere * 10f);
+            Destroy(ball, _ballLifetime);
         }
       
     }

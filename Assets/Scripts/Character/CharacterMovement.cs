@@ -62,8 +62,6 @@ namespace Myoworld.Character
             direction.y = _rigidbody.position.y;
 
             Vector3 currentVelocity = Vector3.zero;
-            //if (_isDebugMode) Debug.Log($"Move forward : {direction}");
-            //_rigidbody.velocity = Vector3.SmoothDamp(_rigidbody.velocity, direction, ref currentVelocity, _playerData.Acceleration);
             _rigidbody.transform.Translate(_moveDirection.x * _playerData.Speed * Time.deltaTime, 0f, _moveDirection.y * _playerData.Speed * Time.deltaTime);
 
       

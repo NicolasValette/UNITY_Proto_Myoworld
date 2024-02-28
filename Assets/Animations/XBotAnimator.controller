@@ -150,15 +150,15 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -203655887218126122, guid: 222e8dbdc4c504048a00a73addda9da8, type: 3}
     m_Threshold: 0
-    m_Position: {x: -0.438, y: 0.308}
+    m_Position: {x: 0.02, y: -0.06}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   - serializedVersion: 2
     m_Motion: {fileID: -203655887218126122, guid: 72a17dc74d8aea74b8f708bb6e01f118, type: 3}
-    m_Threshold: 3
-    m_Position: {x: 0.308, y: -0.076}
+    m_Threshold: 5
+    m_Position: {x: 0, y: -0.5}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
@@ -166,13 +166,13 @@ BlendTree:
   - serializedVersion: 2
     m_Motion: {fileID: -203655887218126122, guid: 1168cfade012bc648afb278e18105464, type: 3}
     m_Threshold: 25
-    m_Position: {x: -0.385, y: -0.194}
+    m_Position: {x: 0, y: -1}
     m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Speed
     m_Mirror: 0
   m_BlendParameter: Speed
-  m_BlendParameterY: Speed
+  m_BlendParameterY: Y
   m_MinThreshold: 0
   m_MaxThreshold: 25
   m_UseAutomaticThresholds: 0
@@ -287,6 +287,18 @@ AnimatorController:
     m_Controller: {fileID: 9100000}
   - m_Name: Victory
     m_Type: 9
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: X
+    m_Type: 1
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: Y
+    m_Type: 1
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Player
   m_EditorClassIdentifier: 
   _speed: 5
-  _rotationSpeed: 5
+  _rotationSpeed: 50
   _acceleration: 0.5
   _jumpForce: 5
   _gravityScale: 0.15

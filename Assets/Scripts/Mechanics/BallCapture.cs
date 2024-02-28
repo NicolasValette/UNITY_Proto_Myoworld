@@ -35,7 +35,6 @@ public class BallCapture : MonoBehaviour
                 timeBeforeDestruction = effect.RunEffect();
             }
             Destroy(gameObject, timeBeforeDestruction);
-            Debug.Log("Duration = " + timeBeforeDestruction);
         }
     }
 }
